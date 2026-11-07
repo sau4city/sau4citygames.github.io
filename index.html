@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sau4City Games · Juegos indie y desarrollo de videojuegos</title>
+  <meta name="description" content="Web oficial de Sau4City Games: juegos indie, devlogs y desarrollo de videojuegos. Descubre Crazy Chess, nuestro primer juego, gratis en Steam.">
+  <meta name="theme-color" content="#050308">
+
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Sau4City Games">
+  <meta property="og:title" content="Sau4City Games · Juegos indie y desarrollo de videojuegos">
+  <meta property="og:description" content="Juegos indie, devlogs y desarrollo de videojuegos. Crazy Chess, gratis en Steam.">
+  <meta property="og:url" content="https://sau4citygames.com/">
+  <meta property="og:image" content="https://sau4citygames.com/assets/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       Tokens del design system "Sau4city Games Design System"
+       (colores, tipografía, espaciado, radios, glows y movimiento)
+       ============================================================ */
+    :root {
+      --bg-0: #050308; --bg-1: #0B0714; --bg-2: #140D22; --bg-3: #1D1430;
+
+      --neon-blue: #2E7BFF; --neon-cyan: #21D4FD; --neon-violet: #8B3DFF;
+      --neon-magenta: #E039F5; --neon-lime: #A8E610; --neon-lime-bright: #C6FF33;
+
+      --chrome-1: #F4F7FF; --chrome-2: #C7D2E8; --chrome-3: #8E9AB8;
+      --fg-1: #F4F7FF; --fg-2: #B9C1D9; --fg-3: #7C86A6; --fg-inverse: #0B0714;
+
+      --accent-primary: var(--neon-violet); --accent-primary-hover: #9D5CFF;
+      --accent-link: var(--neon-cyan);
+      --danger: #FB4D6D; --warning: #FACC15;
+
+      --border-subtle: rgba(139, 61, 255, 0.22);
+      --border-strong: rgba(139, 61, 255, 0.55);
+
+      --grad-brand: linear-gradient(100deg, #2E7BFF 0%, #8B3DFF 45%, #E039F5 100%);
+      --grad-cta: linear-gradient(100deg, #A8E610 0%, #21D4FD 100%);
+      --grad-chrome: linear-gradient(180deg, #FFFFFF 0%, #C7D2E8 45%, #6E7DA1 55%, #E8EEFB 100%);
+
+      --font-display: "Exo 2", system-ui, sans-serif;
+      --font-body: "Chakra Petch", system-ui, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+      --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+      --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px; --space-9: 96px;
+      --radius-sm: 4px; --radius-md: 8px; --radius-lg: 14px; --radius-pill: 999px;
+      --clip-corner: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+
+      --glow-violet: 0 0 12px rgba(139, 61, 255, 0.55), 0 0 32px rgba(139, 61, 255, 0.25);
+      --glow-cyan: 0 0 12px rgba(33, 212, 253, 0.55), 0 0 32px rgba(33, 212, 253, 0.25);
+      --glow-lime: 0 0 12px rgba(168, 230, 16, 0.55), 0 0 32px rgba(168, 230, 16, 0.25);
+      --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.6);
+      --shadow-pop: 0 16px 48px rgba(0, 0, 0, 0.7);
+      --focus-ring: 0 0 0 2px var(--bg-0), 0 0 0 4px var(--neon-cyan);
+
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-snap: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --dur-fast: 120ms; --dur-base: 200ms;
+
+      /* Propios de esta página (derivados de la paleta) */
+      --tile-light: #C7D2E8;
+      --tile-dark: #44288F;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    * { margin: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+
+    body {
+      background: var(--bg-0);
+      color: var(--fg-2);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: var(--neon-violet); color: #fff; }
+    a { color: var(--accent-link); }
+    img { max-width: 100%; }
+    :focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: var(--fg-1);
+      line-height: 1.05;
+      text-wrap: balance;
+    }
+    h2 { font-size: clamp(2rem, 4.6vw, 2.75rem); margin-bottom: var(--space-4); }
+    h3 { font-size: 1.5rem; margin-bottom: var(--space-2); }
+
+    .wrap { width: min(1160px, 100% - 48px); margin-inline: auto; }
+    .block { padding-block: var(--space-9); }
+    .lead { max-width: 60ch; color: var(--fg-2); font-size: 1.125rem; }
+
+    /* ---------- Botones (componente Button) ---------- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 20px; border: 1px solid transparent; border-radius: var(--radius-sm);
+      font-family: var(--font-body); font-weight: 600; font-size: 15px;
+      text-transform: uppercase; letter-spacing: 0.06em; text-decoration: none;
+      white-space: nowrap; cursor: pointer;
+      transition: all var(--dur-fast) var(--ease-out);
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-cta { background: var(--grad-cta); color: var(--fg-inverse); clip-path: var(--clip-corner); border-radius: 0; }
+    .btn-cta:hover { filter: brightness(1.1); }
+    .btn-secondary { background: transparent; color: var(--fg-1); border-color: var(--border-strong); }
+    .btn-secondary:hover { border-color: var(--neon-violet); box-shadow: var(--glow-violet); }
+    .btn-ghost { background: transparent; color: var(--fg-2); }
+    .btn-ghost:hover { background: var(--bg-3); color: var(--fg-1); }
+    .btn-sm { padding: 6px 14px; font-size: 13px; }
+    .btn-cta.btn-sm:focus-visible, .btn-cta:focus-visible { box-shadow: none; outline: 2px solid var(--neon-cyan); outline-offset: 3px; }
+
+    /* ---------- Badge y Tag ---------- */
+    .badge {
+      display: inline-flex; align-items: center; padding: 3px 10px;
+      font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      border-radius: var(--radius-sm); border: 1px solid; color: var(--c); border-color: var(--c);
+      background: color-mix(in srgb, var(--c) 12%, transparent);
+    }
+    .badge.cyan { --c: var(--neon-cyan); }
+    .badge.lime { --c: var(--neon-lime); }
+    .badge.magenta { --c: var(--neon-magenta); }
+    .badges { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-4); }
+
+    .tags { display: flex; flex-wrap: wrap; gap: var(--space-2); list-style: none; padding: 0; }
+    .tags li {
+      padding: 5px 14px; border-radius: var(--radius-pill); font-size: 13px; font-weight: 500;
+      background: var(--bg-2); color: var(--fg-2); border: 1px solid var(--border-subtle);
+    }
+
+    /* ---------- Cabecera ---------- */
+    .top {
+      position: sticky; top: 0; z-index: 40;
+      background: rgba(5, 3, 8, 0.8); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .top .wrap { display: flex; align-items: center; gap: var(--space-5); min-height: 68px; }
+    .top .logo img { height: 48px; width: auto; display: block; }
+    .top nav { display: flex; gap: var(--space-1); margin-right: auto; }
+    .top nav a {
+      font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
+      text-decoration: none; padding: 8px 14px; border-radius: var(--radius-sm); color: var(--fg-3);
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .top nav a:hover { color: var(--fg-1); }
+
+    /* ---------- Portada ---------- */
+    .hero-img {
+      display: block; width: 100%; height: clamp(220px, 30vw, 430px); object-fit: cover; object-position: center;
+      -webkit-mask-image: linear-gradient(#000 62%, transparent);
+      mask-image: linear-gradient(#000 62%, transparent);
+    }
+    .hero-text { position: relative; padding-top: var(--space-2); padding-bottom: var(--space-8); }
+    .hero h1 {
+      font-size: clamp(2.6rem, 8vw, 4.75rem); margin-bottom: var(--space-3);
+      background: var(--grad-chrome); -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero .lead { margin-bottom: var(--space-5); }
+    .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+    /* ---------- Juegos ---------- */
+    .games {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); margin-top: var(--space-6);
+    }
+    .feat {
+      grid-column: span 2; padding: 1px; border-radius: var(--radius-lg); background: var(--grad-brand);
+      transition: all var(--dur-base) var(--ease-out);
+    }
+    .feat:hover { box-shadow: var(--glow-violet); transform: translateY(-2px); }
+    .feat-in {
+      display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); height: 100%;
+      background: var(--bg-2); border-radius: 13px; overflow: hidden;
+    }
+    .feat-thumb {
+      position: relative; min-height: 230px; display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--neon-violet), var(--bg-2));
+    }
+    .feat-thumb::before {
+      content: "♞"; font-size: 5rem; line-height: 1; color: var(--chrome-1); -webkit-text-stroke: 2px var(--bg-0);
+    }
+    .feat-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .feat-body { padding: var(--space-6); display: flex; flex-direction: column; justify-content: center; }
+    .feat-body h3 { font-size: 2rem; }
+    .feat-body p { margin-bottom: var(--space-5); }
+
+    .soon {
+      display: flex; flex-direction: column; justify-content: center; gap: var(--space-3);
+      padding: var(--space-6); border: 1px dashed var(--border-strong); border-radius: var(--radius-lg);
+      background: var(--bg-1);
+    }
+    .soon .btn { align-self: flex-start; margin-top: var(--space-2); }
+
+    /* ---------- Crazy Chess ---------- */
+    .cc-head { display: grid; grid-template-columns: 1fr minmax(0, 440px); gap: var(--space-8); align-items: center; }
+    .cc-head .lead { margin-bottom: var(--space-5); }
+    .meta { margin-top: var(--space-4); color: var(--fg-3); font-size: 14px; }
+    .sub { margin-top: var(--space-9); }
+    .sub h3 { font-size: 1.75rem; margin-bottom: var(--space-5); }
+
+    /* Mini demo jugable */
+    .board {
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; padding: 14px;
+      background: var(--bg-2); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+    }
+    .empty { aspect-ratio: 1; }
+    .cell {
+      position: relative; aspect-ratio: 1; padding: 0; border: 0; border-radius: var(--radius-sm);
+      display: grid; place-items: center; font: inherit; color: inherit; cursor: default;
+    }
+    .cell.light { background: var(--tile-light); }
+    .cell.dark { background: var(--tile-dark); }
+    .cell.fire { background: linear-gradient(160deg, var(--warning), var(--danger)); }
+    .cell.move { cursor: pointer; }
+    .cell.move:hover { outline: 3px solid var(--neon-cyan); outline-offset: -3px; }
+    .cell.move::after {
+      content: ""; position: absolute; width: 26%; aspect-ratio: 1; border-radius: 50%;
+      background: var(--neon-cyan); box-shadow: var(--glow-cyan);
+    }
+    .cell.has-knight::after, .cell.has-orb::after { display: none; }
+    .flame {
+      width: 52%; aspect-ratio: .8; background: linear-gradient(180deg, #fff6c9, #ffd24d 55%, #ff7b3a);
+      clip-path: polygon(50% 0%, 68% 28%, 86% 52%, 82% 84%, 50% 100%, 18% 84%, 14% 52%, 32% 28%);
+    }
+    .orb {
+      width: 62%; aspect-ratio: 1; border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #fff, var(--neon-cyan) 45%, var(--neon-blue));
+      box-shadow: var(--glow-cyan); animation: pulse 2.4s ease-in-out infinite;
+    }
+    .won .orb { animation: none; transform: scale(1.35); box-shadow: 0 0 34px 12px rgba(33, 212, 253, .85); transition: all .4s var(--ease-snap); }
+    @keyframes pulse { 50% { transform: scale(1.14); } }
+    .knight {
+      position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none;
+      font-size: clamp(1.9rem, 6.4vw, 3rem); line-height: 1; color: #fff; -webkit-text-stroke: 1.5px var(--bg-0);
+    }
+    .demo-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-top: var(--space-4); }
+    .demo-status { min-height: 3.2em; font-size: 14px; color: var(--fg-2); }
+    .demo-note { margin-top: var(--space-1); font-size: 13px; color: var(--fg-3); }
+
+    /* Tráiler */
+    .trailer {
+      aspect-ratio: 16 / 9; width: 100%; overflow: hidden; border-radius: var(--radius-lg);
+      background: var(--bg-2); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-card);
+    }
+    .trailer iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .trailer-empty {
+      height: 100%; display: grid; place-content: center; justify-items: center; gap: var(--space-4);
+      padding: var(--space-5); text-align: center;
+      background:
+        radial-gradient(circle at 50% 120%, rgba(224, 57, 245, .35), transparent 60%),
+        conic-gradient(var(--tile-dark) 25%, #3a2279 0 50%, var(--tile-dark) 0 75%, #3a2279 0) 0 0 / 80px 80px;
+    }
+    .trailer-empty p { background: var(--bg-0); padding: 10px 18px; border-radius: var(--radius-md); color: var(--fg-1); }
+    .trailer-empty .big { font-size: 3.4rem; line-height: 1; background: none; padding: 0; color: #fff; -webkit-text-stroke: 2px var(--bg-0); }
+
+    /* Cómo se juega */
+    .mech { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+    .mech li {
+      padding: var(--space-5); background: var(--bg-2); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg); box-shadow: var(--shadow-card);
+      transition: all var(--dur-base) var(--ease-out);
+    }
+    .mech li:hover { transform: translateY(-2px); box-shadow: var(--shadow-pop); }
+    .mech h4 {
+      font-family: var(--font-display); font-style: italic; font-weight: 800; text-transform: uppercase;
+      letter-spacing: .02em; font-size: 1.15rem; color: var(--fg-1); margin: var(--space-4) 0 var(--space-1);
+    }
+    .mech p { font-size: 14px; }
+    .icon {
+      width: 52px; aspect-ratio: 1; border-radius: var(--radius-md); display: grid; place-items: center;
+      font-size: 1.8rem; line-height: 1; color: #fff; -webkit-text-stroke: 1px var(--bg-0);
+    }
+    .i-enemy { background: var(--tile-dark); }
+    .i-morph { background: var(--tile-light); }
+    .i-ice { background: linear-gradient(160deg, #eaffff, #a9ecff); color: #2a7a95; -webkit-text-stroke: 0; }
+    .i-fire { background: linear-gradient(160deg, var(--warning), var(--danger)); }
+    .i-fire .flame { width: 46%; }
+    .i-bomb { background: var(--bg-0); border: 1px solid var(--border-subtle); }
+    .bomb { position: relative; width: 52%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #6b5a9a, #120a26 70%); }
+    .bomb::after { content: ""; position: absolute; top: -26%; right: 6%; width: 22%; aspect-ratio: 1; border-radius: 50%; background: var(--warning); box-shadow: 0 0 8px 2px var(--danger); }
+
+    /* Incluye + ficha */
+    .two { display: grid; grid-template-columns: 1fr 1.1fr; gap: var(--space-8); align-items: start; }
+    .two .lead { margin-bottom: var(--space-5); }
+    .sheet { background: var(--bg-2); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); padding: var(--space-2) var(--space-5); }
+    .sheet div { display: grid; grid-template-columns: 170px 1fr; gap: var(--space-4); padding-block: var(--space-4); border-top: 1px solid var(--border-subtle); }
+    .sheet div:first-child { border-top: 0; }
+    .sheet dt { color: var(--fg-3); }
+    .sheet dd { color: var(--fg-1); font-weight: 500; }
+
+    /* ---------- Redes ---------- */
+    .nets { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-5); margin-top: var(--space-6); }
+    .net {
+      position: relative; display: block; overflow: hidden; text-decoration: none;
+      padding: 30px 26px 24px; background: var(--bg-2);
+      border: 1px solid var(--bd); clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+      transition: transform var(--dur-base) var(--ease-snap), border-color var(--dur-base) var(--ease-out);
+    }
+    .net::before { content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 4px; background: var(--bar); }
+    .net::after {
+      content: ""; position: absolute; right: -30px; bottom: -50px; width: 190px; height: 190px; border-radius: 50%;
+      background: radial-gradient(circle, var(--bubble), transparent 68%);
+    }
+    .net:hover { transform: translateY(-3px); border-color: var(--bar-solid); }
+    .net:focus-visible { box-shadow: none; outline: 2px solid var(--neon-cyan); outline-offset: -4px; }
+    .net > * { position: relative; z-index: 1; }
+    .net-top { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3); }
+    .net svg { width: 32px; height: 32px; fill: var(--chrome-1); flex: none; display: block; }
+    .net-name {
+      font-family: var(--font-display); font-style: italic; font-weight: 900; text-transform: uppercase;
+      letter-spacing: .03em; font-size: 1.85rem; line-height: 1;
+      background: var(--grad-chrome); -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .net p { font-size: 14px; color: var(--fg-2); margin-bottom: var(--space-2); }
+    .net .handle { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; color: var(--neon-lime-bright); }
+    .n-yt { --bd: rgba(139, 61, 255, .35); --bar: linear-gradient(100deg, #2E7BFF, #8B3DFF 45%, #E039F5); --bar-solid: #8B3DFF; --bubble: rgba(224, 57, 245, .42); }
+    .n-x { --bd: rgba(33, 212, 253, .35); --bar: linear-gradient(100deg, #21D4FD, #2E7BFF 60%, #8B3DFF); --bar-solid: #21D4FD; --bubble: rgba(33, 212, 253, .38); }
+    .n-ig { --bd: rgba(224, 57, 245, .35); --bar: linear-gradient(100deg, #8B3DFF, #E039F5); --bar-solid: #E039F5; --bubble: rgba(139, 61, 255, .42); }
+    .n-tt { --bd: rgba(168, 230, 16, .35); --bar: linear-gradient(100deg, #A8E610, #21D4FD); --bar-solid: #A8E610; --bubble: rgba(168, 230, 16, .34); }
+    .n-tw { --bd: rgba(139, 61, 255, .35); --bar: linear-gradient(100deg, #8B3DFF, #2E7BFF); --bar-solid: #8B3DFF; --bubble: rgba(139, 61, 255, .42); }
+
+    /* ---------- Pie ---------- */
+    footer { border-top: 1px solid var(--border-subtle); padding-block: var(--space-5); }
+    footer .wrap { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-4) var(--space-5); }
+    footer img { height: 40px; width: auto; display: block; }
+    footer .copy { flex: 1; font-size: 13px; color: var(--fg-3); min-width: 220px; }
+    footer ul { list-style: none; padding: 0; display: flex; gap: var(--space-2); }
+    footer ul a {
+      display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle); transition: all var(--dur-fast) var(--ease-out);
+    }
+    footer ul a:hover { border-color: var(--neon-violet); box-shadow: var(--glow-violet); }
+    footer ul svg { width: 18px; height: 18px; fill: var(--chrome-1); display: block; }
+
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    /* ---------- Móvil ---------- */
+    @media (max-width: 900px) {
+      .block { padding-block: var(--space-8); }
+      .top nav { display: none; }
+      .top .wrap { gap: var(--space-3); }
+      .top .logo { margin-right: auto; }
+      .games { grid-template-columns: 1fr; }
+      .feat { grid-column: auto; }
+      .feat-in { grid-template-columns: 1fr; }
+      .feat-body { padding: var(--space-5); }
+      .cc-head, .two { grid-template-columns: 1fr; gap: var(--space-6); }
+      .sub { margin-top: var(--space-8); }
+      .sheet div { grid-template-columns: 1fr; gap: 2px; }
+      .mech { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 560px) {
+      .mech { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+      .orb { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Iconos de redes (los mismos del design system) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-youtube" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></symbol>
+    <symbol id="i-instagram" viewBox="0 0 24 24"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></symbol>
+    <symbol id="i-tiktok" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></symbol>
+    <symbol id="i-twitch" viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></symbol>
+  </svg>
+
+  <header class="top">
+    <div class="wrap">
+      <a class="logo" href="#inicio" aria-label="Sau4City Games, inicio"><img src="assets/logo.webp" width="642" height="497" alt="Sau4City Games"></a>
+      <nav aria-label="Principal">
+        <a href="#juegos">Juegos</a>
+        <a href="#crazy-chess">Crazy Chess</a>
+        <a href="#redes">Redes</a>
+      </nav>
+      <a class="btn btn-cta btn-sm" href="https://store.steampowered.com/app/5338480/" target="_blank" rel="noopener">Ver en Steam</a>
+    </div>
+  </header>
+
+  <main id="inicio">
+
+    <!-- Portada -->
+    <section class="hero">
+      <img class="hero-img" src="assets/banner.webp" width="1536" height="464" fetchpriority="high"
+           alt="Banner de Sau4City Games con un coche y una nave en una ciudad de neón">
+      <div class="wrap hero-text">
+        <h1>Sau4City Games</h1>
+        <p class="lead">Juegos indie, devlogs y desarrollo de videojuegos.</p>
+        <div class="actions">
+          <a class="btn btn-cta" href="#juegos">Ver juegos</a>
+          <a class="btn btn-secondary" href="#redes">Síguenos</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Juegos -->
+    <section class="block" id="juegos" style="padding-top:var(--space-6)">
+      <div class="wrap">
+        <h2>Nuestros juegos</h2>
+        <p class="lead">Todos los juegos de Sau4City Games viven aquí. Ahora mismo hay uno, y ya puedes verlo en Steam.</p>
+
+        <!--
+          PARA AÑADIR UN JUEGO NUEVO: copia una tarjeta <div class="soon"> o <article class="feat">,
+          cambia el texto y el enlace, y colócala dentro de este <div class="games">.
+        -->
+        <div class="games">
+          <article class="feat">
+            <div class="feat-in">
+              <div class="feat-thumb">
+                <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5338480/02d4813029d94736d68fa0512cccf6eb75831a06/header.jpg?t=1793565092"
+                     alt="Imagen de Crazy Chess en Steam" width="460" height="215" loading="lazy" onerror="this.remove()">
+              </div>
+              <div class="feat-body">
+                <div class="badges">
+                  <span class="badge cyan">Puzle</span>
+                  <span class="badge lime">Gratis</span>
+                  <span class="badge magenta">20 nov 2026</span>
+                </div>
+                <h3>Crazy Chess</h3>
+                <p>Guía a un caballo por tableros de formas raras, esquiva el fuego y las bombas y abre el portal al siguiente nivel. 50 puzles sin una pizca de azar.</p>
+                <div class="actions">
+                  <a class="btn btn-cta btn-sm" href="https://store.steampowered.com/app/5338480/" target="_blank" rel="noopener">Ver en Steam</a>
+                  <a class="btn btn-secondary btn-sm" href="#crazy-chess">Más sobre el juego</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <div class="soon">
+            <h3>El siguiente juego</h3>
+            <p>Aún no hay nada que enseñar. Síguenos y serás el primero en enterarte.</p>
+            <a class="btn btn-ghost btn-sm" href="#redes">Ver redes</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Crazy Chess -->
+    <section class="block" id="crazy-chess" style="padding-top:var(--space-6)">
+      <div class="wrap">
+        <div class="cc-head">
+          <div>
+            <h2>Crazy Chess</h2>
+            <p class="lead">Un puzle por turnos con tableros irregulares. Lleva al caballo hasta el orbe y abre el portal. Mueves tú y, después, se mueve todo lo demás.</p>
+            <div class="actions">
+              <a class="btn btn-cta" href="https://store.steampowered.com/app/5338480/" target="_blank" rel="noopener">Ver en Steam</a>
+              <a class="btn btn-secondary" href="#trailer">Ver tráiler</a>
+            </div>
+            <p class="meta">Gratis · Windows · Sale el 20 de noviembre de 2026</p>
+          </div>
+
+          <div class="demo">
+            <div class="board" id="board" role="group" aria-label="Mini demo de Crazy Chess"></div>
+            <div class="demo-bar">
+              <span class="demo-status" id="status" aria-live="polite">Mueve el caballo hasta el orbe y esquiva el fuego.</span>
+              <button class="btn btn-secondary btn-sm" id="reset" type="button">Reiniciar</button>
+            </div>
+            <p class="demo-note">Demo simplificada: en el juego, el fuego se extiende y quema.</p>
+          </div>
+        </div>
+
+        <div class="sub" id="trailer">
+          <h3>Tráiler</h3>
+          <!--
+            PARA PONER EL TRÁILER: copia el identificador del vídeo de YouTube
+            (lo que va después de "watch?v=") y pégalo en data-youtube-id.
+            Ejemplo: data-youtube-id="dQw4w9WgXcQ"
+          -->
+          <div class="trailer" id="trailer-box" data-youtube-id="">
+            <div class="trailer-empty">
+              <p class="big" aria-hidden="true">♞</p>
+              <p>El tráiler llega pronto.</p>
+              <a class="btn btn-cta btn-sm" href="https://store.steampowered.com/app/5338480/" target="_blank" rel="noopener">Mira la ficha en Steam</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Cómo se juega</h3>
+          <ul class="mech">
+            <li>
+              <span class="icon i-enemy" aria-hidden="true">♟</span>
+              <h4>Enemigos</h4>
+              <p>Se mueven después que tú, cada uno a su manera.</p>
+            </li>
+            <li>
+              <span class="icon i-morph" aria-hidden="true">♝</span>
+              <h4>Transformaciones</h4>
+              <p>Tu caballo se convierte en peón, torre o alfil.</p>
+            </li>
+            <li>
+              <span class="icon i-ice" aria-hidden="true">❄&#xFE0E;</span>
+              <h4>Hielo</h4>
+              <p>Te deslizas hasta que algo te frena.</p>
+            </li>
+            <li>
+              <span class="icon i-fire" aria-hidden="true"><span class="flame"></span></span>
+              <h4>Fuego</h4>
+              <p>Se extiende cada turno y quema casillas, piezas y objetos.</p>
+            </li>
+            <li>
+              <span class="icon i-bomb" aria-hidden="true"><span class="bomb"></span></span>
+              <h4>Bombas</h4>
+              <p>Cuentan atrás y destruyen todo lo que tienen alrededor.</p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sub two">
+          <div>
+            <h3>Sin azar</h3>
+            <p class="lead">Aquí no hay suerte: solo tú y el tablero. Todos los niveles tienen solución, y las tres estrellas de cada uno son para quien encuentre la ruta difícil.</p>
+            <ul class="tags">
+              <li>50 niveles</li>
+              <li>150 estrellas</li>
+              <li>Editor de niveles</li>
+              <li>Récords en niveles compartidos</li>
+              <li>4 perfiles locales</li>
+              <li>9 idiomas</li>
+              <li>Logros de Steam</li>
+              <li>Steam Cloud</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Ficha</h3>
+            <dl class="sheet">
+              <div><dt>Género</dt><dd>Puzle por turnos, casual e indie</dd></div>
+              <div><dt>Jugadores</dt><dd>Un jugador</dd></div>
+              <div><dt>Precio</dt><dd>Gratis</dd></div>
+              <div><dt>Sale</dt><dd>20 de noviembre de 2026 en Steam</dd></div>
+              <div><dt>Plataforma</dt><dd>Windows 10 (64 bits)</dd></div>
+              <div><dt>Requisitos mínimos</dt><dd>Procesador de doble núcleo a 2 GHz, 4 GB de RAM, gráficos integrados con DirectX 11 y 350 MB de espacio</dd></div>
+              <div><dt>Idiomas</dt><dd>Español (España y Latinoamérica), inglés, francés, italiano, alemán, portugués (Brasil y Portugal) y ruso</dd></div>
+              <div><dt>Desarrollo</dt><dd>Sau4City Games</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Redes -->
+    <section class="block" id="redes" style="padding-top:var(--space-6)">
+      <div class="wrap">
+        <h2>Síguenos</h2>
+        <p class="lead">Devlogs, directos y novedades de los juegos. ¡Elige tu red!</p>
+
+        <div class="nets">
+          <a class="net n-yt" href="https://www.youtube.com/@Sau4City" target="_blank" rel="noopener">
+            <div class="net-top"><svg aria-hidden="true"><use href="#i-youtube"/></svg><span class="net-name">YouTube</span></div>
+            <p>Devlogs, análisis y gameplays de indies</p>
+            <span class="handle">@Sau4City</span>
+          </a>
+          <a class="net n-tw" href="https://www.twitch.tv/sau4city" target="_blank" rel="noopener">
+            <div class="net-top"><svg aria-hidden="true"><use href="#i-twitch"/></svg><span class="net-name">Twitch</span></div>
+            <p>Directos de desarrollo y de juegos</p>
+            <span class="handle">twitch.tv/sau4city</span>
+          </a>
+          <a class="net n-x" href="https://x.com/Sau4City" target="_blank" rel="noopener">
+            <div class="net-top"><svg aria-hidden="true"><use href="#i-x"/></svg><span class="net-name">X</span></div>
+            <p>Avisos de directo y micro-devlogs</p>
+            <span class="handle">@Sau4City</span>
+          </a>
+          <a class="net n-ig" href="https://www.instagram.com/sau4city/" target="_blank" rel="noopener">
+            <div class="net-top"><svg aria-hidden="true"><use href="#i-instagram"/></svg><span class="net-name">Instagram</span></div>
+            <p>Pixel art, capturas y el detrás de cámaras</p>
+            <span class="handle">@Sau4City</span>
+          </a>
+          <a class="net n-tt" href="https://www.tiktok.com/@sau4city" target="_blank" rel="noopener">
+            <div class="net-top"><svg aria-hidden="true"><use href="#i-tiktok"/></svg><span class="net-name">TikTok</span></div>
+            <p>Clips rápidos y los mejores momentos</p>
+            <span class="handle">@Sau4City</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <img src="assets/logo.webp" width="642" height="497" alt="" loading="lazy">
+      <span class="copy">© 2026 Sau4City Games · Juegos indie y desarrollo de videojuegos</span>
+      <ul>
+        <li><a href="https://www.youtube.com/@Sau4City" target="_blank" rel="noopener" aria-label="YouTube"><svg aria-hidden="true"><use href="#i-youtube"/></svg></a></li>
+        <li><a href="https://www.twitch.tv/sau4city" target="_blank" rel="noopener" aria-label="Twitch"><svg aria-hidden="true"><use href="#i-twitch"/></svg></a></li>
+        <li><a href="https://x.com/Sau4City" target="_blank" rel="noopener" aria-label="X"><svg aria-hidden="true"><use href="#i-x"/></svg></a></li>
+        <li><a href="https://www.instagram.com/sau4city/" target="_blank" rel="noopener" aria-label="Instagram"><svg aria-hidden="true"><use href="#i-instagram"/></svg></a></li>
+        <li><a href="https://www.tiktok.com/@sau4city" target="_blank" rel="noopener" aria-label="TikTok"><svg aria-hidden="true"><use href="#i-tiktok"/></svg></a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+    /* ---------- Tráiler: se activa al rellenar data-youtube-id ---------- */
+    (function () {
+      var box = document.getElementById('trailer-box');
+      var id = (box.getAttribute('data-youtube-id') || '').trim();
+      if (!id) return;
+      var frame = document.createElement('iframe');
+      frame.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?rel=0';
+      frame.title = 'Tráiler de Crazy Chess';
+      frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      frame.allowFullscreen = true;
+      frame.loading = 'lazy';
+      box.innerHTML = '';
+      box.appendChild(frame);
+    })();
+
+    /* ---------- Mini demo: el caballo se mueve en L hasta el orbe ---------- */
+    (function () {
+      var MASK = [
+        '..XXX..',
+        '.XXXXX.',
+        'XXXXXXX',
+        'XXXXXXX',
+        '.XXXXX.',
+        '..XXX..'
+      ];
+      var START = [4, 1];
+      var ORB = [1, 5];
+      var FIRE = { '2,3': true, '3,2': true };
+      var BEST = 3;
+      var JUMPS = [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]];
+
+      var board = document.getElementById('board');
+      var status = document.getElementById('status');
+      var reset = document.getElementById('reset');
+      var cells = {};
+      var pos, moves, done;
+
+      function key(r, c) { return r + ',' + c; }
+      function inBoard(r, c) {
+        return r >= 0 && r < MASK.length && c >= 0 && c < MASK[0].length && MASK[r][c] === 'X';
+      }
+      function legal(r, c) {
+        if (done) return false;
+        if (!inBoard(r, c) || FIRE[key(r, c)]) return false;
+        return JUMPS.some(function (j) { return pos[0] + j[0] === r && pos[1] + j[1] === c; });
+      }
+      function plural(n) { return n + (n === 1 ? ' movimiento' : ' movimientos'); }
+
+      function build() {
+        MASK.forEach(function (row, r) {
+          for (var c = 0; c < row.length; c++) {
+            if (row[c] !== 'X') {
+              var gap = document.createElement('span');
+              gap.className = 'empty';
+              board.appendChild(gap);
+              continue;
+            }
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'cell ' + ((r + c) % 2 ? 'dark' : 'light');
+            if (FIRE[key(r, c)]) { b.classList.add('fire'); b.innerHTML = '<span class="flame"></span>'; }
+            if (r === ORB[0] && c === ORB[1]) { b.insertAdjacentHTML('beforeend', '<span class="orb"></span>'); b.classList.add('has-orb'); }
+            b.addEventListener('click', onCell.bind(null, r, c));
+            board.appendChild(b);
+            cells[key(r, c)] = b;
+          }
+        });
+      }
+
+      function render() {
+        board.classList.toggle('won', done);
+        Object.keys(cells).forEach(function (k) {
+          var rc = k.split(',').map(Number);
+          var el = cells[k];
+          var isKnight = rc[0] === pos[0] && rc[1] === pos[1];
+          var can = legal(rc[0], rc[1]);
+          var old = el.querySelector('.knight');
+          if (old) old.remove();
+          if (isKnight) el.insertAdjacentHTML('beforeend', '<span class="knight" aria-hidden="true">♞</span>');
+          el.classList.toggle('has-knight', isKnight);
+          el.classList.toggle('move', can);
+          el.disabled = !can;
+          var label = 'Fila ' + (rc[0] + 1) + ', columna ' + (rc[1] + 1);
+          if (isKnight) label += ': caballo';
+          else if (rc[0] === ORB[0] && rc[1] === ORB[1]) label += ': orbe';
+          else if (FIRE[k]) label += ': fuego';
+          else if (can) label += ': mover aquí';
+          el.setAttribute('aria-label', label);
+        });
+      }
+
+      function onCell(r, c) {
+        if (!legal(r, c)) return;
+        pos = [r, c];
+        moves++;
+        if (r === ORB[0] && c === ORB[1]) {
+          done = true;
+          status.textContent = moves === BEST
+            ? '¡Portal abierto en ' + plural(moves) + '! Es el mínimo.'
+            : '¡Portal abierto en ' + plural(moves) + '! Se puede en ' + BEST + '.';
+          reset.focus();
+        } else {
+          status.textContent = plural(moves) + '. Sigue hasta el orbe.';
+        }
+        render();
+      }
+
+      function start() {
+        pos = START.slice();
+        moves = 0;
+        done = false;
+        status.textContent = 'Mueve el caballo hasta el orbe y esquiva el fuego.';
+        render();
+      }
+
+      reset.addEventListener('click', start);
+      build();
+      start();
+    })();
+  </script>
+</body>
+</html>
